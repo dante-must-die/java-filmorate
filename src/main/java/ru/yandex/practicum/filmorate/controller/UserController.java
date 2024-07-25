@@ -28,8 +28,8 @@ public class UserController {
         return user;
     }
 
-    @PutMapping("/{id}")
-    public User updateUser(@PathVariable int id, @Valid @RequestBody User updatedUser) {
+    @PutMapping()
+    public User updateUser(int id, @Valid @RequestBody User updatedUser) {
         validateUser(updatedUser);
         for (User user : users) {
             if (user.getId() == id) {

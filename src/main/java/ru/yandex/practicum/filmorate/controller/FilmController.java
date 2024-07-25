@@ -26,9 +26,8 @@ public class FilmController {
         log.info("Фильм добавлен: {}", film);
         return film;
     }
-
-    @PutMapping("/{id}")
-    public Film updateFilm(@PathVariable int id, @Valid @RequestBody Film updatedFilm) {
+    @PutMapping
+    public Film updateFilm(int id, @Valid @RequestBody Film updatedFilm) {
         validateFilm(updatedFilm);
         for (Film film : films) {
             if (film.getId() == id) {

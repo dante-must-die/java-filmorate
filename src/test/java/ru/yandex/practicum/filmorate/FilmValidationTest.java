@@ -65,7 +65,6 @@ public class FilmValidationTest {
         assertEquals("Описание не может превышать 200 символов", violations.iterator().next().getMessage());
     }
 
-
     @Test
     public void testInvalidFilmDuration() {
         Film film = new Film();
