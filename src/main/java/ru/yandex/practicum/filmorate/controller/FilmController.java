@@ -26,6 +26,7 @@ public class FilmController {
         log.info("Фильм добавлен: {}", film);
         return film;
     }
+
     @PutMapping
     public Film updateFilm(int id, @Valid @RequestBody Film updatedFilm) {
         validateFilm(updatedFilm);
