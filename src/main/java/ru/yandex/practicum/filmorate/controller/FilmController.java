@@ -10,42 +10,42 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/films")
 @Validated
 public class FilmController {
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private final List<Film> films = new ArrayList<>();
+    private final Map<Integer, Film> films = new HashMap<>();
+    private static int generatorId = 0;
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
         validateFilm(film);
-        films.add(film);
+        film.setId(++generatorId);
+        films.put(film.getId(), film);
         log.info("Фильм добавлен: {}", film);
         return film;
     }
 
     @PutMapping
-    public Film updateFilm(int id, @Valid @RequestBody Film updatedFilm) {
+    public Film updateFilm(@Valid @RequestBody Film updatedFilm) {
         validateFilm(updatedFilm);
-        for (Film film : films) {
-            if (film.getId() == id) {
-                film.setName(updatedFilm.getName());
-                film.setDescription(updatedFilm.getDescription());
-                film.setReleaseDate(updatedFilm.getReleaseDate());
-                film.setDuration(updatedFilm.getDuration());
-                log.info("Фильм обновлен: {}", film);
-                return film;
-            }
+        int id = updatedFilm.getId();
+        if(!films.containsKey(id)) {
+            log.debug("Фильм не найден.");
+            throw new ValidationException("Фильм с id " + id + " не найден");
         }
-        throw new ValidationException("Фильм с id " + id + " не найден");
+        films.put(updatedFilm.getId(), updatedFilm);
+        return updatedFilm;
     }
 
     @GetMapping
-    public List<Film> getAllFilms() {
-        return films;
+    public List<Film> findAll() {
+        return new ArrayList<>(films.values());
     }
 
     private void validateFilm(Film film) {

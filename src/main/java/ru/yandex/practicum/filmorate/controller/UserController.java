@@ -6,47 +6,48 @@ import org.slf4j.LoggerFactory;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
 
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/users")
 @Validated
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private final List<User> users = new ArrayList<>();
+    private final Map<Integer, User> users = new HashMap<>();
+    private static int generatorId = 0;
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
         validateUser(user);
-        users.add(user);
+        user.setId(++generatorId);
+        users.put(generatorId, user);
         log.info("Пользователь создан: {}", user);
         return user;
     }
 
     @PutMapping()
-    public User updateUser(int id, @Valid @RequestBody User updatedUser) {
+    public User updateUser(@Valid @RequestBody User updatedUser) {
         validateUser(updatedUser);
-        for (User user : users) {
-            if (user.getId() == id) {
-                user.setEmail(updatedUser.getEmail());
-                user.setLogin(updatedUser.getLogin());
-                user.setName(updatedUser.getName() != null ? updatedUser.getName() : updatedUser.getLogin());
-                user.setBirthday(updatedUser.getBirthday());
-                log.info("Пользователь обновлен: {}", user);
-                return user;
-            }
+        int id = updatedUser.getId();
+        if (!users.containsKey(id)) {
+            log.debug("Пользователь не найден.");
+            throw new ValidationException("Пользователь с id " + id + " не найден");
         }
-        throw new ValidationException("Пользователь с id " + id + " не найден");
+        users.put(id, updatedUser);
+        return updatedUser;
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return users;
+    public List<User> findAll() {
+        return new ArrayList<>(users.values());
     }
 
     private void validateUser(User user) {
