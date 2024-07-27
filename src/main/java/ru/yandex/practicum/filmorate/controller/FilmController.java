@@ -19,8 +19,8 @@ import java.util.Map;
 @Validated
 public class FilmController {
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private final Map<Integer, Film> films = new HashMap<>();
     private static int generatorId = 0;
+    private final Map<Integer, Film> films = new HashMap<>();
 
     @PostMapping
     public Film addFilm(@Valid @RequestBody Film film) {
@@ -35,7 +35,7 @@ public class FilmController {
     public Film updateFilm(@Valid @RequestBody Film updatedFilm) {
         validateFilm(updatedFilm);
         int id = updatedFilm.getId();
-        if(!films.containsKey(id)) {
+        if (!films.containsKey(id)) {
             log.debug("Фильм не найден.");
             throw new ValidationException("Фильм с id " + id + " не найден");
         }

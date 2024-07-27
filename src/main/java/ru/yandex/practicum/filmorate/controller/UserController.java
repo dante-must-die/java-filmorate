@@ -21,8 +21,8 @@ import java.util.Map;
 @Validated
 public class UserController {
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
-    private final Map<Integer, User> users = new HashMap<>();
     private static int generatorId = 0;
+    private final Map<Integer, User> users = new HashMap<>();
 
     @PostMapping
     public User createUser(@Valid @RequestBody User user) {
