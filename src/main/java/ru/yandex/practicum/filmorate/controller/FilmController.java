@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
+import static ru.yandex.practicum.filmorate.validator.FilmValidator.*;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,13 +19,13 @@ import java.util.Map;
 @RestController
 @RequestMapping("/films")
 @Validated
-public class FilmController {
+public class FilmController { // класс контроллер для запросов films
     private static final Logger log = LoggerFactory.getLogger(FilmController.class);
     private static int generatorId = 0;
-    private final Map<Integer, Film> films = new HashMap<>();
+    private final Map<Integer, Film> films = new HashMap<>(); // основная структура для хранения информации о фильмах
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) {
+    public Film addFilm(@Valid @RequestBody Film film) { // энд-поинт на запрос post
         validateFilm(film);
         film.setId(++generatorId);
         films.put(film.getId(), film);
@@ -32,7 +34,7 @@ public class FilmController {
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film updatedFilm) {
+    public Film updateFilm(@Valid @RequestBody Film updatedFilm) { // энд-поинт на запрос put
         validateFilm(updatedFilm);
         int id = updatedFilm.getId();
         if (!films.containsKey(id)) {
@@ -46,12 +48,6 @@ public class FilmController {
     @GetMapping
     public List<Film> findAll() {
         return new ArrayList<>(films.values());
-    }
+    } //энд-поинт на запрос put
 
-    private void validateFilm(Film film) {
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            log.error("Дата релиза не может быть раньше 28 декабря 1895 года: {}", film.getReleaseDate());
-            throw new ValidationException("Дата релиза не может быть раньше 28 декабря 1895 года");
-        }
-    }
 }

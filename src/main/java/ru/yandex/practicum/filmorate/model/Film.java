@@ -6,7 +6,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
-public class Film {
+public class Film { // модель film
     private Integer id;
 
     @NotBlank(message = "Название не может быть пустым")

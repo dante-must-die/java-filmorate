@@ -7,7 +7,7 @@ import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
-public class User {
+public class User { // модель user
     private Integer id;
 
     @NotBlank(message = "Электронная почта не может быть пустой")

@@ -15,16 +15,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static ru.yandex.practicum.filmorate.validator.UserValidator.validateUser;
+
 @RestController
 @RequestMapping("/users")
 @Validated
-public class UserController {
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+public class UserController { // класс контроллер для запросов users
+    private static final Logger log = LoggerFactory.getLogger(UserController.class); // логгер
     private static int generatorId = 0;
-    private final Map<Integer, User> users = new HashMap<>();
+    private final Map<Integer, User> users = new HashMap<>(); // основная структура для хранения информации о пользователях
 
     @PostMapping
-    public User createUser(@Valid @RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) { // энд-поинт на запрос post
         validateUser(user);
         user.setId(++generatorId);
         users.put(generatorId, user);
@@ -32,7 +34,7 @@ public class UserController {
         return user;
     }
 
-    @PutMapping()
+    @PutMapping() // энд-поинт на запрос put
     public User updateUser(@Valid @RequestBody User updatedUser) {
         validateUser(updatedUser);
         int id = updatedUser.getId();
@@ -47,15 +49,6 @@ public class UserController {
     @GetMapping
     public List<User> findAll() {
         return new ArrayList<>(users.values());
-    }
+    } //энд-поинт на запрос put
 
-    private void validateUser(User user) {
-        if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.error("Дата рождения не может быть в будущем: {}", user.getBirthday());
-            throw new ValidationException("Дата рождения не может быть в будущем");
-        }
-        if (user.getName() == null || user.getName().isBlank()) {
-            user.setName(user.getLogin());
-        }
-    }
 }
