@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/films")
-public class FilmController {
+public class FilmController { // контроллер для film
 
     private final FilmService filmService;
 
