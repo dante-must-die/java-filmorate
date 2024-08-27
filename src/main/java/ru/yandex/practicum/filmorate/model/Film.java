@@ -2,8 +2,12 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import jakarta.validation.constraints.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Data
 public class Film { // модель film
@@ -21,4 +25,19 @@ public class Film { // модель film
 
     @Positive(message = "Продолжительность фильма должна быть положительным числом")
     private int duration;
+
+    @Getter
+    private final Set<Integer> likes = new HashSet<>();
+
+    public void addLike(Integer userId) {
+        likes.add(userId);
+    }
+
+    public void removeLike(Integer userId) {
+        likes.remove(userId);
+    }
+
+    public int getLikesCount() {
+        return likes.size();
+    }
 }
