@@ -8,6 +8,12 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Модель, представляющая фильм.
+ * Включает информацию о фильме, такую как название, описание, дата релиза и продолжительность,
+ * а также методы для работы с лайками пользователей.
+ */
+
 @Data
 public class Film { // модель film
     @Getter

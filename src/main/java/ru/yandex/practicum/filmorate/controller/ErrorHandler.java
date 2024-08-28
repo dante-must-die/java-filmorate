@@ -8,8 +8,13 @@ import ru.yandex.practicum.filmorate.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.CustomErrorResponse;
 
+/**
+ * Класс для централизованной обработки ошибок в приложении.
+ * Обрабатывает исключения типа NotFoundException и ValidationException,
+ * возвращая соответствующие HTTP-статусы и сообщения об ошибках.
+ */
 @RestControllerAdvice
-public class ErrorHandler { // класс для централизованной обработки ошибок
+public class ErrorHandler {
 
     @ExceptionHandler(NotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)

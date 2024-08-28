@@ -5,6 +5,11 @@ import ru.yandex.practicum.filmorate.model.User;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Интерфейс для управления хранилищем пользователей.
+ * Определяет основные операции для добавления, обновления, получения
+ * пользователей из хранилища.
+ */
 public interface UserStorage {
     User addUser(User user);
 

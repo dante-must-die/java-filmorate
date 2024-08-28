@@ -5,8 +5,13 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.util.*;
 
+/**
+ * Класс для хранения фильмов в памяти.
+ * Реализует интерфейс FilmStorage и управляет операциями добавления,
+ * обновления, получения и извлечения фильмов из хранилища.
+ */
 @Component
-public class InMemoryFilmStorage implements FilmStorage { // класс для сохранения в памяти
+public class InMemoryFilmStorage implements FilmStorage {
     private final Map<Integer, Film> films = new HashMap<>();
     private int currentId = 0;
 

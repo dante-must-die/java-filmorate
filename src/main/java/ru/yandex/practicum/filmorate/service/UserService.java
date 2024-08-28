@@ -12,8 +12,13 @@ import java.util.stream.Collectors;
 
 import static ru.yandex.practicum.filmorate.validator.UserValidator.validateUser;
 
+/**
+ * Сервисный класс для работы с пользователями и их друзьями.
+ * Реализует бизнес-логику для управления пользователями.
+ */
+
 @Service
-public class UserService { // бизнес логика для user
+public class UserService {
     private final UserStorage userStorage;
 
     @Autowired

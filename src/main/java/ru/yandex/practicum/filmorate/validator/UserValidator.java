@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.time.LocalDate;
 
-public class UserValidator { // валидатор для user
+public class UserValidator {
     private static final Logger log = LoggerFactory.getLogger(UserValidator.class);
 
     public static void validateUser(User user) {

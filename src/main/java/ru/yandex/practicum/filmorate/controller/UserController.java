@@ -10,6 +10,12 @@ import ru.yandex.practicum.filmorate.validator.UserValidator;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Контроллер для управления фильмами.
+ * Обрабатывает HTTP-запросы, связанные с созданием, обновлением, получением информации о фильмах,
+ * а также с управлением лайками пользователей.
+ */
+
 @RestController
 @RequestMapping("/users")
 public class UserController { // контроллер для user

@@ -5,8 +5,13 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.*;
 
+/**
+ * Класс для хранения пользователей в памяти.
+ * Реализует интерфейс UserStorage и управляет операциями добавления,
+ * обновления, получения и извлечения пользователей из хранилища.
+ */
 @Component
-public class InMemoryUserStorage implements UserStorage { // класс для сохранения в памяти
+public class InMemoryUserStorage implements UserStorage {
     private final Map<Integer, User> users = new HashMap<>();
 
     private int currentId = 0;

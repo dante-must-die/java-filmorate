@@ -11,8 +11,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+
+/**
+ * модель для класса user
+ * реализует основные поля и методы для работы с друзьями
+ */
 @Data
-public class User { // модель user
+public class User {
     @Getter
     private final Set<Integer> friends = new HashSet<>(); // hashset друзей пользователя
     private Integer id;
