@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.model;
 
-public class CustomErrorResponse { // класс для ошибок
+public class CustomErrorResponse {
     private final String error;
 
     public CustomErrorResponse(String error) {

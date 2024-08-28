@@ -15,7 +15,7 @@ import java.util.Set;
  */
 
 @Data
-public class Film { // модель film
+public class Film {
     @Getter
     private final Set<Integer> likes = new HashSet<>(); // используем set так как один пользователь = один лайк
     private Integer id;

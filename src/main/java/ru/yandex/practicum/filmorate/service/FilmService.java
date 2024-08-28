@@ -20,7 +20,7 @@ import static ru.yandex.practicum.filmorate.validator.FilmValidator.validateFilm
  */
 
 @Service
-public class FilmService { // бизнес логика для фильмов
+public class FilmService {
     private final FilmStorage filmStorage;
     private final UserStorage userStorage;
 

@@ -17,7 +17,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/films")
-public class FilmController { // контроллер для film
+public class FilmController {
 
     private final FilmService filmService;
 
