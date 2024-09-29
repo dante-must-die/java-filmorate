@@ -7,7 +7,6 @@ import ru.yandex.practicum.filmorate.model.MpaRating;
 import ru.yandex.practicum.filmorate.storage.MpaRatingStorage;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Сервисный класс для работы с рейтингами MPA.
