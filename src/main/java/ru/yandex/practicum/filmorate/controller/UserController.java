@@ -1,52 +1,71 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
+import ru.yandex.practicum.filmorate.validator.UserValidator;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
-import static ru.yandex.practicum.filmorate.validator.UserValidator.validateUser;
+/**
+ * Контроллер для управления фильмами.
+ * Обрабатывает HTTP-запросы, связанные с созданием, обновлением, получением информации о фильмах,
+ * а также с управлением лайками пользователей.
+ */
 
 @RestController
 @RequestMapping("/users")
-@Validated
-public class UserController { // класс контроллер для запросов users
-    private static final Logger log = LoggerFactory.getLogger(UserController.class); // логгер
-    private static int generatorId = 0;
-    private final Map<Integer, User> users = new HashMap<>(); // основная структура для хранения информации о пользователях
+public class UserController {
 
-    @PostMapping
-    public User createUser(@Valid @RequestBody User user) { // энд-поинт на запрос post
-        validateUser(user);
-        user.setId(++generatorId);
-        users.put(generatorId, user);
-        log.info("Пользователь создан: {}", user);
-        return user;
+    private final UserService userService;
+
+    @Autowired
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PutMapping() // энд-поинт на запрос put
-    public User updateUser(@Valid @RequestBody User updatedUser) {
-        validateUser(updatedUser);
-        int id = updatedUser.getId();
-        if (!users.containsKey(id)) {
-            log.debug("Пользователь не найден.");
-            throw new ValidationException("Пользователь с id " + id + " не найден");
-        }
-        users.put(id, updatedUser);
-        return updatedUser;
+    @PostMapping
+    public User createUser(@Valid @RequestBody User user) {
+        UserValidator.validateUser(user);
+        return userService.createUser(user);
+    }
+
+    @PutMapping
+    public User updateUser(@Valid @RequestBody User user) {
+        UserValidator.validateUser(user);
+        return userService.updateUser(user);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<User> getUserById(@PathVariable int id) {
+        return userService.getUserById(id);
     }
 
     @GetMapping
-    public List<User> findAll() {
-        return new ArrayList<>(users.values());
-    } //энд-поинт на запрос put
+    public List<User> getAllUsers() {
+        return userService.getAllUsers();
+    }
 
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.addFriend(id, friendId);
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void removeFriend(@PathVariable int id, @PathVariable int friendId) {
+        userService.removeFriend(id, friendId);
+    }
+
+    @GetMapping("/{id}/friends")
+    public List<User> getFriends(@PathVariable int id) {
+        return userService.getFriends(id);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> getCommonFriends(@PathVariable int id, @PathVariable int otherId) {
+        return userService.getCommonFriends(id, otherId);
+    }
 }

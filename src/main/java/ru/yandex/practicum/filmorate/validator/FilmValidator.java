@@ -8,7 +8,7 @@ import java.time.LocalDate;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class FilmValidator {
+public class FilmValidator { // валидатор для фильмов
     private static final Logger log = getLogger(FilmValidator.class);
 
     public static void validateFilm(Film film) {

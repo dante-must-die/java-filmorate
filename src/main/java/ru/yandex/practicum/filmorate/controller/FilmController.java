@@ -1,52 +1,65 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.validation.annotation.Validated;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
+import ru.yandex.practicum.filmorate.validator.FilmValidator;
 
-import static ru.yandex.practicum.filmorate.validator.FilmValidator.*;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 
+/**
+ * Контроллер для управления пользователями.
+ * Обрабатывает HTTP-запросы, связанные с созданием, обновлением, получением информации о пользователях,
+ * а также с управлением отношениями между пользователями (например, добавление друзей).
+ */
 @RestController
 @RequestMapping("/films")
-@Validated
-public class FilmController { // класс контроллер для запросов films
-    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
-    private static int generatorId = 0;
-    private final Map<Integer, Film> films = new HashMap<>(); // основная структура для хранения информации о фильмах
+public class FilmController {
+
+    private final FilmService filmService;
+
+    @Autowired
+    public FilmController(FilmService filmService) {
+        this.filmService = filmService;
+    }
 
     @PostMapping
-    public Film addFilm(@Valid @RequestBody Film film) { // энд-поинт на запрос post
-        validateFilm(film);
-        film.setId(++generatorId);
-        films.put(film.getId(), film);
-        log.info("Фильм добавлен: {}", film);
-        return film;
+    public Film addFilm(@Valid @RequestBody Film film) {
+        FilmValidator.validateFilm(film);
+        return filmService.addFilm(film);
     }
 
     @PutMapping
-    public Film updateFilm(@Valid @RequestBody Film updatedFilm) { // энд-поинт на запрос put
-        validateFilm(updatedFilm);
-        int id = updatedFilm.getId();
-        if (!films.containsKey(id)) {
-            log.debug("Фильм не найден.");
-            throw new ValidationException("Фильм с id " + id + " не найден");
-        }
-        films.put(updatedFilm.getId(), updatedFilm);
-        return updatedFilm;
+    public Film updateFilm(@Valid @RequestBody Film film) {
+        FilmValidator.validateFilm(film);
+        return filmService.updateFilm(film);
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Film> getFilmById(@PathVariable int id) {
+        return filmService.getFilmById(id);
     }
 
     @GetMapping
-    public List<Film> findAll() {
-        return new ArrayList<>(films.values());
-    } //энд-поинт на запрос put
+    public List<Film> getAllFilms() {
+        return filmService.getAllFilms();
+    }
 
+    @PutMapping("/{id}/like/{userId}")
+    public void addLike(@PathVariable int id, @PathVariable int userId) {
+        filmService.addLike(id, userId);
+    }
+
+    @DeleteMapping("/{id}/like/{userId}")
+    public void removeLike(@PathVariable int id, @PathVariable int userId) {
+        filmService.removeLike(id, userId);
+    }
+
+    @GetMapping("/popular")
+    public List<Film> getPopularFilms(@RequestParam(defaultValue = "10") int count) {
+        return filmService.getPopularFilms(count);
+    }
 }
