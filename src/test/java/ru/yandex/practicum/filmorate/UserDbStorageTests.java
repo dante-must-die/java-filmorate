@@ -109,8 +109,7 @@ class UserDbStorageTests {
         // Проверяем, что у friendUser нет testUser в списке друзей (односторонняя дружба)
         Set<Integer> friendsOfFriend = userStorage.getFriendsByUserId(friendUser.getId());
         assertThat(friendsOfFriend).doesNotContain(testUser.getId());
-
-        // Удаляем из друзей
+        
         userStorage.removeFriend(testUser.getId(), friendUser.getId());
         friends = userStorage.getFriendsByUserId(testUser.getId());
         assertThat(friends).doesNotContain(friendUser.getId());
