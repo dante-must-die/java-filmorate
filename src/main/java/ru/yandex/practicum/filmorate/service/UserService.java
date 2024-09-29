@@ -48,33 +48,42 @@ public class UserService {
 
     // методы для работы с друзьями
     public void addFriend(int userId, int friendId) throws NotFoundException {
-        User user = userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
-        User friend = userStorage.getUserById(friendId).orElseThrow(() -> new NotFoundException("Пользователь с ID " + friendId + " не найден."));
-        user.getFriends().add(friendId);
-        friend.getFriends().add(userId);
+        User user = userStorage.getUserById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
+        User friend = userStorage.getUserById(friendId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с ID " + friendId + " не найден."));
+        userStorage.addFriend(userId, friendId);
     }
 
     public void removeFriend(int userId, int friendId) throws NotFoundException {
-        User user = userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
-        User friend = userStorage.getUserById(friendId).orElseThrow(() -> new NotFoundException("Пользователь с ID " + friendId + " не найден."));
-        user.getFriends().remove(friendId);
-        friend.getFriends().remove(userId);
+        User user = userStorage.getUserById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
+        User friend = userStorage.getUserById(friendId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с ID " + friendId + " не найден."));
+        userStorage.removeFriend(userId, friendId);
     }
 
     public List<User> getFriends(int userId) throws NotFoundException {
-        User user = userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
-        return user.getFriends().stream()
-                .map(id -> userStorage.getUserById(id).orElseThrow(() -> new NotFoundException("Пользователь с ID " + id + " не найден.")))
+        userStorage.getUserById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
+        Set<Integer> friendIds = userStorage.getFriendsByUserId(userId);
+        return friendIds.stream()
+                .map(id -> userStorage.getUserById(id)
+                        .orElseThrow(() -> new NotFoundException("Пользователь с ID " + id + " не найден.")))
                 .collect(Collectors.toList());
     }
 
     public List<User> getCommonFriends(int userId, int otherUserId) throws NotFoundException {
-        User user = userStorage.getUserById(userId).orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
-        User otherUser = userStorage.getUserById(otherUserId).orElseThrow(() -> new NotFoundException("Пользователь с ID " + otherUserId + " не найден."));
-        Set<Integer> commonFriendsIds = new HashSet<>(user.getFriends());
-        commonFriendsIds.retainAll(otherUser.getFriends());
-        return commonFriendsIds.stream()
-                .map(id -> userStorage.getUserById(id).orElseThrow(() -> new NotFoundException("Пользователь с ID " + id + " не найден.")))
+        userStorage.getUserById(userId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с ID " + userId + " не найден."));
+        userStorage.getUserById(otherUserId)
+                .orElseThrow(() -> new NotFoundException("Пользователь с ID " + otherUserId + " не найден."));
+        Set<Integer> userFriends = userStorage.getFriendsByUserId(userId);
+        Set<Integer> otherUserFriends = userStorage.getFriendsByUserId(otherUserId);
+        userFriends.retainAll(otherUserFriends);
+        return userFriends.stream()
+                .map(id -> userStorage.getUserById(id)
+                        .orElseThrow(() -> new NotFoundException("Пользователь с ID " + id + " не найден.")))
                 .collect(Collectors.toList());
     }
 }
