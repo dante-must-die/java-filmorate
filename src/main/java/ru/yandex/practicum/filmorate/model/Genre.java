@@ -4,6 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Модель, представляющая жанр фильма.
+ * Включает идентификатор жанра и его название.
+ */
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

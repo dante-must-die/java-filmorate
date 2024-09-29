@@ -9,6 +9,12 @@ import ru.yandex.practicum.filmorate.storage.MpaRatingStorage;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Сервисный класс для работы с рейтингами MPA.
+ * Реализует бизнес-логику для получения всех рейтингов и поиска по ID.
+ */
+
+
 @Service
 public class MpaRatingService {
     private final MpaRatingStorage mpaRatingStorage;

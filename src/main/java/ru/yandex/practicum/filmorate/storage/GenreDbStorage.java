@@ -7,6 +7,12 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Хранилище для работы с жанрами фильмов в базе данных.
+ * Реализует операции получения всех жанров и поиска жанра по ID.
+ */
+
+
 @Component
 public class GenreDbStorage implements GenreStorage {
     private final JdbcTemplate jdbcTemplate;

@@ -8,6 +8,12 @@ import ru.yandex.practicum.filmorate.storage.GenreStorage;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Сервисный класс для работы с жанрами.
+ * Реализует бизнес-логику для получения списка всех жанров и получения жанра по ID.
+ */
+
+
 @Service
 public class GenreService {
     private final GenreStorage genreStorage;

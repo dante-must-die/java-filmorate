@@ -11,6 +11,12 @@ import ru.yandex.practicum.filmorate.service.MpaRatingService;
 
 import java.util.List;
 
+/**
+ * Контроллер для управления рейтингами MPA.
+ * Обрабатывает HTTP-запросы, связанные с получением информации о рейтингах MPA.
+ */
+
+
 @RestController
 @RequestMapping("/mpa")
 public class MpaRatingController {

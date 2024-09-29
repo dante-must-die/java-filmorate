@@ -1,5 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
+/**
+ * Модель для представления ошибок в ответах API.
+ * Содержит текст ошибки.
+ */
+
+
 public class CustomErrorResponse {
     private final String error;
 

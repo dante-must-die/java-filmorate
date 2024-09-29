@@ -7,6 +7,12 @@ import ru.yandex.practicum.filmorate.model.MpaRating;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Хранилище для работы с рейтингами MPA в базе данных.
+ * Реализует операции получения всех рейтингов и поиска рейтинга по ID.
+ */
+
+
 @Component
 public class MpaRatingDbStorage implements MpaRatingStorage {
     private final JdbcTemplate jdbcTemplate;

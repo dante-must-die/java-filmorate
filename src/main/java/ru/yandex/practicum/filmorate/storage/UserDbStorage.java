@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * Хранилище для работы с пользователями в базе данных.
+ * Реализует операции добавления, обновления, получения пользователей,
+ * а также управления их списками друзей.
+ */
+
+
 @Component
 @Qualifier("userDbStorage")
 public class UserDbStorage implements UserStorage {
@@ -55,18 +62,6 @@ public class UserDbStorage implements UserStorage {
         return jdbcTemplate.query(sql, this::mapRowToUser);
     }
 
-    private User mapRowToUser(ResultSet rs, int rowNum) throws SQLException {
-        User user = new User();
-        user.setId(rs.getInt("id"));
-        user.setEmail(rs.getString("email"));
-        user.setLogin(rs.getString("login"));
-        user.setName(rs.getString("name"));
-        user.setBirthday(rs.getDate("birthday").toLocalDate());
-        user.setFriends(getFriendsByUserId(user.getId()));
-        return user;
-    }
-
-
     // Методы для работы с друзьями
     @Override
     public void addFriend(int userId, int friendId) {
@@ -88,4 +83,15 @@ public class UserDbStorage implements UserStorage {
         return new HashSet<>(friends);
     }
 
+
+    private User mapRowToUser(ResultSet rs, int rowNum) throws SQLException {
+        User user = new User();
+        user.setId(rs.getInt("id"));
+        user.setEmail(rs.getString("email"));
+        user.setLogin(rs.getString("login"));
+        user.setName(rs.getString("name"));
+        user.setBirthday(rs.getDate("birthday").toLocalDate());
+        user.setFriends(getFriendsByUserId(user.getId()));
+        return user;
+    }
 }

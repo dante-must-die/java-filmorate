@@ -4,6 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Модель, представляющая рейтинг MPA для фильмов.
+ * Включает идентификатор рейтинга и его название.
+ */
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

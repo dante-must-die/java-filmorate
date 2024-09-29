@@ -11,6 +11,12 @@ import ru.yandex.practicum.filmorate.service.GenreService;
 
 import java.util.List;
 
+/**
+ * Контроллер для управления жанрами.
+ * Обрабатывает HTTP-запросы, связанные с получением информации о жанрах.
+ */
+
+
 @RestController
 @RequestMapping("/genres")
 public class GenreController {

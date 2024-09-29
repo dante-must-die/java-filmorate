@@ -12,6 +12,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
+/**
+ * Хранилище для работы с фильмами в базе данных.
+ * Реализует операции добавления, обновления, получения фильмов, работы с жанрами и лайками фильмов.
+ */
+
+
 @Component
 @Qualifier("filmDbStorage")
 public class FilmDbStorage implements FilmStorage {
@@ -63,6 +69,32 @@ public class FilmDbStorage implements FilmStorage {
         return jdbcTemplate.query(sql, this::mapRowToFilm);
     }
 
+    // Методы для работы с лайками
+    @Override
+    public void addLike(int filmId, int userId) {
+        String sql = "INSERT INTO film_likes (film_id, user_id) VALUES (?, ?)";
+        jdbcTemplate.update(sql, filmId, userId);
+    }
+
+    @Override
+    public void removeLike(int filmId, int userId) {
+        String sql = "DELETE FROM film_likes WHERE film_id = ? AND user_id = ?";
+        jdbcTemplate.update(sql, filmId, userId);
+    }
+
+    @Override
+    public int getLikesCount(int filmId) {
+        String sql = "SELECT COUNT(*) FROM film_likes WHERE film_id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, filmId);
+    }
+
+    @Override
+    public Set<Integer> getLikesByFilmId(int filmId) {
+        String sql = "SELECT user_id FROM film_likes WHERE film_id = ?";
+        List<Integer> likes = jdbcTemplate.queryForList(sql, Integer.class, filmId);
+        return new HashSet<>(likes);
+    }
+
     private Film mapRowToFilm(ResultSet rs, int rowNum) throws SQLException {
         Film film = new Film();
         film.setId(rs.getInt("id"));
@@ -102,31 +134,5 @@ public class FilmDbStorage implements FilmStorage {
     private void deleteFilmGenres(int filmId) {
         String sql = "DELETE FROM film_genres WHERE film_id = ?";
         jdbcTemplate.update(sql, filmId);
-    }
-
-    // Методы для работы с лайками
-    @Override
-    public void addLike(int filmId, int userId) {
-        String sql = "INSERT INTO film_likes (film_id, user_id) VALUES (?, ?)";
-        jdbcTemplate.update(sql, filmId, userId);
-    }
-
-    @Override
-    public void removeLike(int filmId, int userId) {
-        String sql = "DELETE FROM film_likes WHERE film_id = ? AND user_id = ?";
-        jdbcTemplate.update(sql, filmId, userId);
-    }
-
-    @Override
-    public int getLikesCount(int filmId) {
-        String sql = "SELECT COUNT(*) FROM film_likes WHERE film_id = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, filmId);
-    }
-
-    @Override
-    public Set<Integer> getLikesByFilmId(int filmId) {
-        String sql = "SELECT user_id FROM film_likes WHERE film_id = ?";
-        List<Integer> likes = jdbcTemplate.queryForList(sql, Integer.class, filmId);
-        return new HashSet<>(likes);
     }
 }

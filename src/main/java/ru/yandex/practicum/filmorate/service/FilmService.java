@@ -14,6 +14,12 @@ import java.util.stream.Collectors;
 
 import static ru.yandex.practicum.filmorate.validator.FilmValidator.validateFilm;
 
+/**
+ * Сервисный класс для работы с фильмами.
+ * Реализует бизнес-логику для создания, обновления, получения и управления фильмами,
+ * а также для работы с лайками фильмов и их популярностью.
+ */
+
 @Service
 public class FilmService {
     private final FilmStorage filmStorage;
