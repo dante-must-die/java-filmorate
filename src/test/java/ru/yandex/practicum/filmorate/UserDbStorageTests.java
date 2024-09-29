@@ -93,7 +93,6 @@ class UserDbStorageTests {
 
     @Test
     void testAddAndRemoveFriend() {
-        // Создаем второго пользователя
         User friendUser = new User();
         friendUser.setEmail("friend@example.com");
         friendUser.setLogin("frienduser");
@@ -109,7 +108,7 @@ class UserDbStorageTests {
         // Проверяем, что у friendUser нет testUser в списке друзей (односторонняя дружба)
         Set<Integer> friendsOfFriend = userStorage.getFriendsByUserId(friendUser.getId());
         assertThat(friendsOfFriend).doesNotContain(testUser.getId());
-        
+
         userStorage.removeFriend(testUser.getId(), friendUser.getId());
         friends = userStorage.getFriendsByUserId(testUser.getId());
         assertThat(friends).doesNotContain(friendUser.getId());
