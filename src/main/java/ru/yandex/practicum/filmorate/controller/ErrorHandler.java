@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -10,9 +11,10 @@ import ru.yandex.practicum.filmorate.model.CustomErrorResponse;
 
 /**
  * Класс для централизованной обработки ошибок в приложении.
- * Обрабатывает исключения типа NotFoundException и ValidationException,
+ * Обрабатывает исключения типа NotFoundException, ValidationException и DataIntegrityViolationException,
  * возвращая соответствующие HTTP-статусы и сообщения об ошибках.
  */
+
 @RestControllerAdvice
 public class ErrorHandler {
 
@@ -26,5 +28,11 @@ public class ErrorHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public CustomErrorResponse handleValidationException(ValidationException e) {
         return new CustomErrorResponse(e.getMessage());
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public CustomErrorResponse handleDataIntegrityViolationException(DataIntegrityViolationException e) {
+        return new CustomErrorResponse("Data integrity violation: " + e.getMostSpecificCause().getMessage());
     }
 }

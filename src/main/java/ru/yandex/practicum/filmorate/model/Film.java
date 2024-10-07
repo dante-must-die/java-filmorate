@@ -2,22 +2,20 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.Data;
 import jakarta.validation.constraints.*;
-import lombok.Getter;
 
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Модель, представляющая фильм.
- * Включает информацию о фильме, такую как название, описание, дата релиза и продолжительность,
- * а также методы для работы с лайками пользователей.
+ * Включает информацию о фильме: название, описание, дата релиза, продолжительность,
+ * рейтинг MPA, жанры, а также методы для работы с лайками.
  */
 
 @Data
 public class Film {
-    @Getter
-    private final Set<Integer> likes = new HashSet<>(); // используем set так как один пользователь = один лайк
     private Integer id;
     @NotBlank(message = "Название не может быть пустым")
     private String name;
@@ -28,17 +26,22 @@ public class Film {
     private LocalDate releaseDate;
     @Positive(message = "Продолжительность фильма должна быть положительным числом")
     private int duration;
+    private MpaRating mpa;
+    private Set<Genre> genres = new HashSet<>();
+    private Set<Integer> likes = new HashSet<>();
 
-    // методы для работы с лайками
-    public void addLike(Integer userId) {
-        likes.add(userId);
+    public Set<Integer> getLikes() {
+        return Collections.unmodifiableSet(likes);
     }
 
-    public void removeLike(Integer userId) {
-        likes.remove(userId);
+    public void setLikes(Set<Integer> likes) {
+        this.likes = new HashSet<>(likes);
     }
 
-    public int getLikesCount() {
-        return likes.size();
+    public void setGenres(Set<Genre> genres) {
+        this.genres = new HashSet<>(genres);
     }
 }
+
+
+
